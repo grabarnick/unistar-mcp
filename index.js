@@ -133,6 +133,11 @@ function startHttp() {
     const httpServer = http.createServer(async (req, res) => {
         const url = new URL(req.url, `http://${req.headers.host}`);
 
+        if (url.pathname === "/health" && req.method === "GET") {
+            res.writeHead(200, { "Content-Type": "application/json" }).end('{"status":"ok"}');
+            return;
+        }
+
         if (url.pathname !== "/mcp") {
             res.writeHead(404).end("Not found");
             return;
